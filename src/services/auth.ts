@@ -12,4 +12,10 @@ async function signUpUser(credentials: CreateUser) {
   return res;
 }
 
-export { signUpUser };
+async function signInUser(credentials: CreateUser) {
+  const res = await post(`${BASE_URL}/users/sessions`, credentials);
+  console.log("res", res);
+  return res;
+}
+
+export { signUpUser, signInUser };
