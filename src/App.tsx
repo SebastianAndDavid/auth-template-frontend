@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
-import { logout, signInUser, signUpUser } from "./services/auth";
+import { logout, signInUser, signUpUser, verifyUser } from "./services/auth";
 
 interface User {
   id: number;
@@ -16,7 +16,18 @@ function App() {
 
   console.log("user", user);
 
-  async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
+  async function verify() {
+    //work around - verify was returning a user after logout
+    const cookieExists = document.cookie.includes("session");
+    if (cookieExists) {
+      const res = await verifyUser();
+      if (res.data) {
+        setUser(res.data);
+      }
+    }
+  }
+
+  async function handleSignUpSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const { data } = await signUpUser({ email, password });
     setUser(data);
@@ -39,9 +50,13 @@ function App() {
     }
   }
 
+  useEffect(() => {
+    verify();
+  }, []);
+
   return (
     <>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSignUpSubmit}>
         <h1>Sign Up</h1>
         <input
           type="email"
