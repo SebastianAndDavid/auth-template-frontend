@@ -1,4 +1,4 @@
-import { post } from "./request";
+import { del, post } from "./request";
 
 interface CreateUser {
   email: string;
@@ -18,4 +18,9 @@ async function signInUser(credentials: CreateUser) {
   return res;
 }
 
-export { signUpUser, signInUser };
+async function logout() {
+  const res = await del(`${BASE_URL}/users/sessions`);
+  return res;
+}
+
+export { signUpUser, signInUser, logout };

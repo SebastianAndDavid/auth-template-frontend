@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./App.css";
-import { signInUser, signUpUser } from "./services/auth";
+import { logout, signInUser, signUpUser } from "./services/auth";
 
 interface User {
   id: number;
@@ -14,22 +14,29 @@ function App() {
   const [sessionsPassword, setSessionsPassword] = useState("");
   const [user, setUser] = useState<User | null>(null);
 
+  console.log("user", user);
+
   async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = await signUpUser({ email, password });
-    setUser(data.data);
+    const { data } = await signUpUser({ email, password });
+    setUser(data);
     return data;
   }
 
-  console.log("user", user);
-
   async function handleSignIn() {
-    const data = await signInUser({
+    const { data } = await signInUser({
       email: sessionsEmail,
       password: sessionsPassword,
     });
-    console.log("sign in", data);
+    setUser(data);
     return data;
+  }
+
+  async function handleLogout() {
+    const res = await logout();
+    if (res) {
+      setUser(null);
+    }
   }
 
   return (
@@ -62,6 +69,7 @@ function App() {
         />
         <button onClick={() => handleSignIn()}>Submit</button>
       </div>
+      <button onClick={handleLogout}>Logout</button>
     </>
   );
 }
