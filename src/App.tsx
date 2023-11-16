@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 import { logout, signInUser, signUpUser, verifyUser } from "./services/auth";
-
-interface User {
-  id: number;
-  email: string;
-}
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { User } from "./types/userTypes";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -85,6 +83,11 @@ function App() {
         <button onClick={() => handleSignIn()}>Submit</button>
       </div>
       <button onClick={handleLogout}>Logout</button>
+      <Router>
+        <Routes>
+          <Route element={<ProtectedRoute />} />
+        </Routes>
+      </Router>
     </>
   );
 }
