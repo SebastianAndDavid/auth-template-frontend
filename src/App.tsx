@@ -5,13 +5,14 @@ import { User } from "./types/userTypes";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import Home from "./components/Home";
+import Auth from "./components/Auth";
 
 function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [sessionsEmail, setSessionsEmail] = useState("");
   const [sessionsPassword, setSessionsPassword] = useState("");
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | undefined>(undefined);
 
   console.log("user", user);
 
@@ -45,7 +46,7 @@ function App() {
   async function handleLogout() {
     const res = await logout();
     if (res) {
-      setUser(null);
+      setUser(undefined);
     }
   }
 
@@ -86,11 +87,10 @@ function App() {
       <button onClick={handleLogout}>Logout</button>
       <Router>
         <Routes>
-          {user && (
-            <Route element={<ProtectedRoute user={user} />}>
-              <Route path="/home" element={<Home />} />
-            </Route>
-          )}
+          <Route path="/" element={<Auth />} />
+          <Route element={<ProtectedRoute user={user} />}>
+            <Route path="/home" element={<Home />} />
+          </Route>
         </Routes>
       </Router>
     </>

@@ -5,5 +5,5 @@ export interface User {
 }
 
 export interface UserProps {
-  user: User;
+  user?: User;
 }
