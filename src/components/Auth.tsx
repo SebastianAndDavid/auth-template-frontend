@@ -1,4 +1,4 @@
-import { signUpUser } from "../services/auth";
+import { signInUser, signUpUser } from "../services/auth";
 import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
 
@@ -8,16 +8,29 @@ export default function Auth({ user, setUser }: AuthProps) {
   const [isLogin, setIsLogin] = useState(false);
 
   console.log("user", user);
-  console.log("isLogin", isLogin);
+
   async function handleSignUp() {
     const { data } = await signUpUser({ email, password });
     setUser(data);
     return data;
   }
 
+  async function handleSignIn() {
+    const { data } = await signInUser({
+      email,
+      password,
+    });
+    setUser(data);
+    return data;
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    handleSignUp();
+    if (!isLogin) {
+      handleSignUp();
+    } else {
+      handleSignIn();
+    }
   }
 
   return (
