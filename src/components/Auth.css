@@ -1,0 +1,48 @@
+.auth {
+  box-shadow: 1px 1px 5px 1px rgba(0, 0, 0, 0.3);
+  font-family: inherit;
+  border-radius: 0.3em;
+  padding: 1em;
+  width: 288px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-field {
+  display: flex;
+  align-items: center;
+  box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 0.3em;
+  border: 1px solid black;
+  width: 100%;
+  margin: 0.2em;
+}
+
+.form-field {
+  border: none;
+  outline: none;
+  padding: 0.75em;
+  font-weight: normal;
+  width: 80%;
+}
+
+.login-text {
+  text-decoration: underline;
+  cursor: pointer;
+  color: blue;
+}
+
+p {
+  display: flex;
+  flex-direction: column;
+}
+
+.icon {
+  padding: 0.2em;
+  height: 25px;
+  width: 25px;
+}
