@@ -1,6 +1,7 @@
 import { logout, signInUser, signUpUser } from "../services/auth";
 import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
+import "./Auth.css";
 
 export default function Auth({ user, setUser }: AuthProps) {
   const [email, setEmail] = useState("");
@@ -41,29 +42,43 @@ export default function Auth({ user, setUser }: AuthProps) {
   }
 
   return (
-    <>
-      <h1>Auth</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="ABC@123.com"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input type="password" onChange={(e) => setPassword(e.target.value)} />
+    <div className="auth">
+      <h1>Welcome</h1>
+      <form className="form" onSubmit={handleSubmit}>
+        <div className="input-field">
+          <img className="icon" src="mail.png" alt="email" />
+          <input
+            className="form-field"
+            type="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div className="input-field">
+          <img className="icon" src="lock.png" alt="password" />
+          <input
+            className="form-field"
+            type="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
         <button>Submit</button>
       </form>
       {!isLogin ? (
         <p>
           Already have an account?
-          <span onClick={() => setIsLogin(true)}>Click to sign in.</span>
+          <span className="login-text" onClick={() => setIsLogin(true)}>
+            Click to sign in.
+          </span>
         </p>
       ) : (
         <p>
           Don&apos;t have an account?{" "}
-          <span onClick={() => setIsLogin(false)}>Click to sign up.</span>
+          <span className="login-text" onClick={() => setIsLogin(false)}>
+            Click to sign up.
+          </span>
         </p>
       )}
       <button onClick={handleLogout}>Logout</button>
-    </>
+    </div>
   );
 }
