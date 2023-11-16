@@ -4,6 +4,6 @@ export interface User {
   password: string;
 }
 
-export interface AuthProps {
-  user?: User;
+export interface UserProps {
+  user: User;
 }

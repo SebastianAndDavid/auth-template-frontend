@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import "./App.css";
 import { logout, signInUser, signUpUser, verifyUser } from "./services/auth";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { User } from "./types/userTypes";
 import ProtectedRoute from "./components/ProtectedRoute";
+import "./App.css";
+import Home from "./components/Home";
 
 function App() {
   const [email, setEmail] = useState("");
@@ -85,7 +86,11 @@ function App() {
       <button onClick={handleLogout}>Logout</button>
       <Router>
         <Routes>
-          <Route element={<ProtectedRoute />} />
+          {user && (
+            <Route element={<ProtectedRoute user={user} />}>
+              <Route path="/home" element={<Home />} />
+            </Route>
+          )}
         </Routes>
       </Router>
     </>
