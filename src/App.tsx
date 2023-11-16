@@ -13,7 +13,6 @@ function App() {
   const [sessionsEmail, setSessionsEmail] = useState("");
   const [sessionsPassword, setSessionsPassword] = useState("");
   const [user, setUser] = useState<User | undefined>(undefined);
-  console.log("user", user);
 
   async function verify() {
     //work around - verify was returning a user after logout
@@ -86,7 +85,7 @@ function App() {
       <button onClick={handleLogout}>Logout</button>
       <Router>
         <Routes>
-          <Route path="/" element={<Auth user={user} setEmail={setEmail} />} />
+          <Route path="/" element={<Auth user={user} setUser={setUser} />} />
           <Route element={<ProtectedRoute user={user} />}>
             <Route path="/home" element={<Home />} />
           </Route>

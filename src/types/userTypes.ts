@@ -10,5 +10,5 @@ export interface UserProps {
 
 export interface AuthProps {
   user?: User;
-  setEmail: React.Dispatch<React.SetStateAction<string>>;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
 }
