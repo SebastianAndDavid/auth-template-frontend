@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
-import { signInUser, signUpUser } from "./services/auth";
+import { logout, signInUser, signUpUser, verifyUser } from "./services/auth";
 
 interface User {
   id: number;
@@ -14,27 +14,49 @@ function App() {
   const [sessionsPassword, setSessionsPassword] = useState("");
   const [user, setUser] = useState<User | null>(null);
 
-  async function handleSignUp(e: React.FormEvent<HTMLFormElement>) {
+  console.log("user", user);
+
+  async function verify() {
+    //work around - verify was returning a user after logout
+    const cookieExists = document.cookie.includes("session");
+    if (cookieExists) {
+      const res = await verifyUser();
+      if (res.data) {
+        setUser(res.data);
+      }
+    }
+  }
+
+  async function handleSignUpSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const data = await signUpUser({ email, password });
-    setUser(data.data);
+    const { data } = await signUpUser({ email, password });
+    setUser(data);
     return data;
   }
 
-  console.log("user", user);
-
   async function handleSignIn() {
-    const data = await signInUser({
+    const { data } = await signInUser({
       email: sessionsEmail,
       password: sessionsPassword,
     });
-    console.log("sign in", data);
+    setUser(data);
     return data;
   }
 
+  async function handleLogout() {
+    const res = await logout();
+    if (res) {
+      setUser(null);
+    }
+  }
+
+  useEffect(() => {
+    verify();
+  }, []);
+
   return (
     <>
-      <form onSubmit={handleSignUp}>
+      <form onSubmit={handleSignUpSubmit}>
         <h1>Sign Up</h1>
         <input
           type="email"
@@ -62,6 +84,7 @@ function App() {
         />
         <button onClick={() => handleSignIn()}>Submit</button>
       </div>
+      <button onClick={handleLogout}>Logout</button>
     </>
   );
 }

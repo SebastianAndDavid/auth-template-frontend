@@ -1,4 +1,4 @@
-import { post } from "./request";
+import { del, get, post } from "./request";
 
 interface CreateUser {
   email: string;
@@ -14,8 +14,17 @@ async function signUpUser(credentials: CreateUser) {
 
 async function signInUser(credentials: CreateUser) {
   const res = await post(`${BASE_URL}/users/sessions`, credentials);
-  console.log("res", res);
   return res;
 }
 
-export { signUpUser, signInUser };
+async function verifyUser() {
+  const res = await get(`${BASE_URL}/users/me`);
+  return res;
+}
+
+async function logout() {
+  const res = await del(`${BASE_URL}/users/sessions`);
+  return res;
+}
+
+export { signUpUser, signInUser, verifyUser, logout };
