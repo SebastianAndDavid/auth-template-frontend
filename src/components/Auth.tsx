@@ -1,4 +1,4 @@
-import { signInUser, signUpUser } from "../services/auth";
+import { logout, signInUser, signUpUser } from "../services/auth";
 import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
 
@@ -24,6 +24,13 @@ export default function Auth({ user, setUser }: AuthProps) {
     return data;
   }
 
+  async function handleLogout() {
+    const res = await logout();
+    if (res) {
+      setUser(undefined);
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!isLogin) {
@@ -35,8 +42,13 @@ export default function Auth({ user, setUser }: AuthProps) {
 
   return (
     <>
+      <h1>Auth</h1>
       <form onSubmit={handleSubmit}>
-        <input type="email" onChange={(e) => setEmail(e.target.value)} />
+        <input
+          type="email"
+          placeholder="ABC@123.com"
+          onChange={(e) => setEmail(e.target.value)}
+        />
         <input type="password" onChange={(e) => setPassword(e.target.value)} />
         <button>Submit</button>
       </form>
@@ -51,6 +63,7 @@ export default function Auth({ user, setUser }: AuthProps) {
           <span onClick={() => setIsLogin(false)}>Click to sign up.</span>
         </p>
       )}
+      <button onClick={handleLogout}>Logout</button>
     </>
   );
 }
