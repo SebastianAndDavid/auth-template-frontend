@@ -3,17 +3,20 @@ import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
 import "./Auth.css";
 
-export default function Auth({ user, setUser }: AuthProps) {
+export default function Auth({ setUser, setIsUser }: AuthProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log("user", user);
-
   async function handleSignUp() {
-    const { data } = await signUpUser({ email, password });
-    setUser(data);
-    return data;
+    //todo - error handling for empty inputs
+    if (!email && !password) {
+      return alert("Invalid credentials");
+    } else {
+      const { data } = await signUpUser({ email, password });
+      setUser(data);
+      return data;
+    }
   }
 
   async function handleSignIn() {
@@ -22,6 +25,8 @@ export default function Auth({ user, setUser }: AuthProps) {
       password,
     });
     setUser(data);
+    setIsUser(true);
+    await new Promise((resolve) => setTimeout(resolve, 0));
     return data;
   }
 
@@ -35,9 +40,9 @@ export default function Auth({ user, setUser }: AuthProps) {
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (!isLogin) {
-      handleSignUp();
+      await handleSignUp();
     } else {
-      handleSignIn();
+      await handleSignIn();
     }
   }
 

@@ -14,7 +14,6 @@ async function signUpUser(credentials: CreateUser) {
 
 async function signInUser(credentials: CreateUser) {
   const res = await post(`${BASE_URL}/users/sessions`, credentials);
-  console.log("res", res);
   return res;
 }
 

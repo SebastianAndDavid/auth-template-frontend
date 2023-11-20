@@ -4,11 +4,16 @@ export interface User {
   password: string;
 }
 
-export interface UserProps {
-  user?: User;
+export interface ProtectedProps {
+  // user?: User;
+  isUser: boolean;
 }
 
 export interface AuthProps {
-  user?: User;
   setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+  setIsUser: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export interface HomeProps {
+  user?: User;
 }
