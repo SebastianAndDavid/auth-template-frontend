@@ -1,8 +1,9 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { UserProps } from "../types/userTypes";
+import { ProtectedProps } from "../types/userTypes";
 
-export default function ProtectedRoute({ user }: UserProps) {
-  if (!user) {
+export default function ProtectedRoute({ isUser }: ProtectedProps) {
+  console.log("isUser", isUser);
+  if (!isUser) {
     return <Navigate to="/" />;
   }
   return <Outlet />;
