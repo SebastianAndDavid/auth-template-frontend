@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { User } from "../types/userTypes";
 
 interface UserStateAndSetters {
@@ -10,7 +10,10 @@ interface UserProviderProps {
   children: React.ReactNode;
 }
 
-const UserContext = createContext<UserStateAndSetters | null>(null);
+const UserContext = createContext<UserStateAndSetters>({
+  user: null,
+  setUser: () => {},
+} as UserStateAndSetters);
 
 export default function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null);
@@ -25,4 +28,9 @@ export default function UserProvider({ children }: UserProviderProps) {
       {children}
     </UserContext.Provider>
   );
+}
+
+export function useUser() {
+  const { user, setUser } = useContext(UserContext);
+  return [user, setUser];
 }
