@@ -2,11 +2,15 @@ import { logout, signInUser, signUpUser } from "../services/auth";
 import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
 import "./Auth.css";
+import { useUser } from "../context/userContext";
 
-export default function Auth({ setUser, setIsUser }: AuthProps) {
+export default function Auth({ setIsUser }: AuthProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [user, setUser] = useUser();
+
+  console.log("user", user);
 
   async function handleSignUp() {
     //todo - error handling for empty inputs
@@ -14,8 +18,7 @@ export default function Auth({ setUser, setIsUser }: AuthProps) {
       return alert("Invalid credentials");
     } else {
       const { data } = await signUpUser({ email, password });
-      setUser(data);
-      return data;
+      if (data) setUser(data);
     }
   }
 
@@ -24,16 +27,16 @@ export default function Auth({ setUser, setIsUser }: AuthProps) {
       email,
       password,
     });
-    setUser(data);
-    setIsUser(true);
-    await new Promise((resolve) => setTimeout(resolve, 0));
-    return data;
+    if (data) {
+      setUser(data);
+      setIsUser(true);
+    }
   }
 
   async function handleLogout() {
     const res = await logout();
     if (res) {
-      setUser(undefined);
+      setUser(null);
     }
   }
 

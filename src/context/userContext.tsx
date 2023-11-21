@@ -1,9 +1,15 @@
-import { createContext, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  createContext,
+  useContext,
+  useState,
+} from "react";
 import { User } from "../types/userTypes";
 
 interface UserStateAndSetters {
   user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+  setUser: Dispatch<SetStateAction<User | null>>;
 }
 
 interface UserProviderProps {
@@ -32,5 +38,5 @@ export default function UserProvider({ children }: UserProviderProps) {
 
 export function useUser() {
   const { user, setUser } = useContext(UserContext);
-  return [user, setUser];
+  return [user, setUser] as const;
 }

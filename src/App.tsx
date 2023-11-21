@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { User } from "./types/userTypes";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import Home from "./components/Home";
 import Auth from "./components/Auth";
+import UserProvider from "./context/userContext";
 
 function App() {
-  const [user, setUser] = useState<User | undefined>(undefined);
+  // const [user, setUser] = useState<User | undefined>(undefined);
   const [isUser, setIsUser] = useState(false);
 
   console.log("isUser", isUser);
@@ -28,15 +28,14 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={<Auth setUser={setUser} setIsUser={setIsUser} />}
-          />
-          <Route path="/home" element={<ProtectedRoute isUser={isUser} />}>
-            <Route index element={<Home user={user} />} />
-          </Route>
-        </Routes>
+        <UserProvider>
+          <Routes>
+            <Route path="/" element={<Auth setIsUser={setIsUser} />} />
+            <Route path="/home" element={<ProtectedRoute isUser={isUser} />}>
+              <Route index element={<Home />} />
+            </Route>
+          </Routes>
+        </UserProvider>
       </Router>
     </>
   );
