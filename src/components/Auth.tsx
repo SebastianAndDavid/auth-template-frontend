@@ -1,16 +1,17 @@
 import { logout, signInUser, signUpUser } from "../services/auth";
-import { AuthProps } from "../types/userTypes";
 import { useState } from "react";
 import "./Auth.css";
 import { useUser } from "../context/userContext";
+import { useNavigate } from "react-router-dom";
 
-export default function Auth({ setIsUser }: AuthProps) {
+export default function Auth() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useUser();
+  const navigate = useNavigate();
 
-  console.log("user", user);
+  console.log("user in auth", user);
 
   async function handleSignUp() {
     //todo - error handling for empty inputs
@@ -29,7 +30,6 @@ export default function Auth({ setIsUser }: AuthProps) {
     });
     if (data) {
       setUser(data);
-      setIsUser(true);
     }
   }
 
@@ -46,13 +46,14 @@ export default function Auth({ setIsUser }: AuthProps) {
       await handleSignUp();
     } else {
       await handleSignIn();
+      navigate("/home");
     }
   }
 
   return (
     <div className="auth">
       <h1>Welcome</h1>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={(e) => handleSubmit(e)}>
         <div className="input-field">
           <img className="icon" src="mail.png" alt="email" />
           <input

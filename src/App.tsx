@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
@@ -7,10 +6,9 @@ import Auth from "./components/Auth";
 import UserProvider from "./context/userContext";
 
 function App() {
+  // const user = useUser();
+  // console.log("user in app", user);
   // const [user, setUser] = useState<User | undefined>(undefined);
-  const [isUser, setIsUser] = useState(false);
-
-  console.log("isUser", isUser);
 
   // async function verify() {
   //   //work around - verify was returning a user after logout
@@ -30,9 +28,9 @@ function App() {
       <Router>
         <UserProvider>
           <Routes>
-            <Route path="/" element={<Auth setIsUser={setIsUser} />} />
-            <Route path="/home" element={<ProtectedRoute isUser={isUser} />}>
-              <Route index element={<Home />} />
+            <Route path="/" element={<Auth />} />
+            <Route element={<ProtectedRoute />}>
+              <Route path="/home" element={<Home />} />
             </Route>
           </Routes>
         </UserProvider>

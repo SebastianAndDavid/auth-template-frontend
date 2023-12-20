@@ -3,9 +3,11 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { User } from "../types/userTypes";
+import { verifyUser } from "../services/auth";
 
 interface UserStateAndSetters {
   user: User | null;
@@ -23,6 +25,15 @@ const UserContext = createContext<UserStateAndSetters>({
 
 export default function UserProvider({ children }: UserProviderProps) {
   const [user, setUser] = useState<User | null>(null);
+
+  async function verify() {
+    const data = await verifyUser();
+    if (data) setUser(data.data);
+  }
+
+  useEffect(() => {
+    verify();
+  }, []);
 
   const stateAndSetters: UserStateAndSetters = {
     user,

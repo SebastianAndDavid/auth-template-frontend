@@ -1,9 +1,11 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { ProtectedProps } from "../types/userTypes";
+import { useUser } from "../context/userContext";
 
-export default function ProtectedRoute({ isUser }: ProtectedProps) {
-  console.log("isUser", isUser);
-  if (!isUser) {
+export default function ProtectedRoute() {
+  const [user] = useUser();
+
+  console.log("user in protected", user);
+  if (user) {
     return <Navigate to="/" />;
   }
   return <Outlet />;
